@@ -18,4 +18,4 @@ def primes(n):
                 candidates[j] = False
     return [i for (i, c) in enumerate(candidates) if c]
 
-print "Primes below 20:", ", ".join(map(str, primes(20)))
+print("Primes below 20:", ", ".join(map(str, primes(20))))
