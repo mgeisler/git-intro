@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Git Introduction</title>
+    <meta charset="utf-8">
+    <style>
+     @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+     @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+     @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+     body {
+       font-family: 'Droid Serif';
+     }
+     h1, h2, h3 {
+       font-family: 'Yanone Kaffeesatz';
+       font-weight: normal;
+     }
+     .remark-code, .remark-inline-code {
+       font-family: 'Ubuntu Mono';
+     }
+     .remark-inline-code {
+       background-color: #AAEBFF;
+       padding: 3px 4px;
+       border-radius: 3px;
+     }
+     img {
+       max-width: 100%;
+       max-height: 100%;
+     }
+     .zoom25 img {
+       zoom: 0.25;
+       max-width: none;
+     }
+     .zoom30 img {
+       zoom: 0.30;
+       max-width: none;
+     }
+     .zoom40 img {
+       zoom: 0.40;
+       max-width: none;
+     }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Git Introduction
+
+Martin Geisler
+
+---
+
+# About Me
+
+* Software Engineer in the Zurich office
+
+* Working in the newly founded Custom Tech Lab under Nick Garratt
+
+* Long-time interest and involvement in DVCS
+
+
+---
+
+# Basic Git Commands
+
+* `git init`
+
+* `git clone`
+
+* `git checkout`
+
+* `git log`
+
+* `git status`
+
+* `git diff`
+
+* `git add`, `git rm`
+
+* `git commit`
+
+* `git push`, `git pull`, `git fetch`
+
+---
+
+# Intermediate Git Commands
+
+* `git merge`
+
+* `git reset`
+
+* `git stash`
+
+* `git branch`
+
+* `git checkout -b feature-X`
+
+* `git diff --cached`
+
+* `git commit --amend`
+
+* `git rebase master feature-X`
+
+---
+
+# Advanced Git Commands
+
+* `git add -p`
+
+* `git reset -p`
+
+* `git rebase -i master`
+
+* `git bisect`
+
+* `git revert`
+
+* `git reset --hard HEAD^`
+
+* `git reflog`
+
+---
+
+# Distributed Version Control
+
+.center[.zoom30[![](distributed.png)]]
+
+---
+
+# Repository, Staging Area, and Working Copy
+
+![Git areas](areas.png)
+
+---
+
+# File Lifecycle
+
+![Lifecycle](lifecycle.png)
+
+* How do you *stage* a file?
+
+* How do you *unstage* a file?
+
+---
+
+# Commits, Trees, and Blobs
+
+![](commit-and-tree.png)
+
+---
+
+# Commits = Snapshots
+
+![](snapshots.png)
+
+---
+
+# Branches
+.zoom40[![](basic-branching-1.png)]
+
+---
+
+# Branches
+.zoom40[![](basic-branching-2.png)]
+
+---
+
+# Branches
+.zoom40[![](basic-branching-3.png)]
+
+---
+
+# Branches
+.zoom40[![](basic-branching-4.png)]
+
+---
+
+# Branches
+.zoom40[![](basic-branching-5.png)]
+
+---
+
+# Branches
+.zoom40[![](basic-branching-6.png)]
+
+---
+
+# First-Time Configuration
+
+You should configure some basic things:
+```sh
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+$ git config --global ui.color true
+```
+
+---
+
+# Log Viewers
+
+Find a graphical log viewer that can show the commit graph:
+
+* `gitg`: My preferred viewer, it shows the commit graph well:
+  https://wiki.gnome.org/action/show/Apps/Gitg
+
+* `gitk`: Comes with Git, but is quite poor in comparison to other
+  viewers
+
+* SourceTree: I've heard good things about this free viewer:
+  https://www.sourcetreeapp.com/
+
+* There are many more: http://git-scm.com/downloads/guis
+
+---
+
+# Merge Tools
+
+When merging fails, Git can start a merge tool to help you resolve the
+conflicts. I highly recommend investing some time in learning to use
+one!
+
+The best open source tool is KDiff3:
+```sh
+$ git config --global merge.tool kdiff3
+$ git config --global mergetool.prompt off
+```
+
+---
+
+# GitHub Workflow
+
+* Fork repository on GitHub
+
+* Clone the fork onto your computer with `git clone`
+
+* Create a new feature branch from `master` with `git checkout -b`
+
+* Make your changes, `git commit` as you go along
+
+* Publish feature branch: `git push origin feature-X`
+
+* Create a pull request on GitHub
+
+* Get feedback, revise your branch with `git commit`, `git commit
+--amend` or `git rebase -i`
+
+* Re-publish your branch with `git push -f origin feature-X`
+  (`--force` needed if you rewrote history)
+
+---
+
+# Commits to Avoid
+
+* Merges of `master` into your feature branch
+
+    - Instead rebase the feature branch on top of `master`
+    - The result is a history that clearly shows your work without
+      mixing it with upstream work
+
+* Commits that don't compile/build/work
+
+    - Instead make sure each commit makes sense on its own – it
+      should be a small incremental step towards some goal
+    - This enables `git bisect` and ensures general sanity
+
+* Commits that fix errors introduced earlier in same pull request
+
+    - Instead commit the fix and use `git rebase -i` to squash the fix
+      into the commit that introduced the error!
+
+---
+
+# Writing Good Commit Messages
+
+Commit messages are an important tool! Take some time to write good
+and helpful messages for your future self and your team mates.
+
+* Explain *why* the change is made, not just *what* you did
+
+    - `git diff` already shows what changed
+    - Remove the need for your team mates to guess your thinking when
+      looking at a change 6 weeks or 6 years later
+
+* Reference issues, commits, and related information
+
+    - Use the GitHub syntax for closing issues: `Fixes #123`
+    - Link to bug reports in other projects that explains the problem
+
+* Keep the subject line shorter than 50 characters, keep the body
+  lines shorter than 80 characters
+
+    - Displays better in terminals and online
+
+
+---
+
+# Further Reading
+
+* `git help` has documentation for all commands
+
+* Pro Git: http://git-scm.com/book/ (all images are borrowed from here)
+
+* Atlassian Git tutorials: https://www.atlassian.com/git/tutorials/
+
+* Version Control with Git: https://www.git-tower.com/learn/git/ebook/command-line/introduction
+
+* and many more... use your favorite search engine!
+
+---
+
+# Exercises
+
+* Start with Hello World:
+  https://guides.github.com/activities/hello-world/
+
+* Read about pull requests: https://guides.github.com/introduction/flow/
+
+* Configure your Git: username, email, merge tool
+
+* If using SSH, add your SSH public key to GitHub
+
+* Try out Git in your browser: https://try.github.io/
+
+* Fix the issues in my repository: https://github.com/mgeisler/git-intro/
+
+    - Fork the repository, fix an issue, commit and make a pull
+      request!
+
+* Practice basic commands: http://jnthn.net/training/git/exercises.pdf
+
+* Solve Git puzzles: http://pcottle.github.io/learnGitBranching/
+
+    </textarea>
+    <script src="remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
