@@ -1,3 +1,3 @@
-# Test Repositoory
+# Test Repository
 
-This si a repository for Git testing.
+This is a repository for Git testing.
